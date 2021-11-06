@@ -327,10 +327,15 @@ def count_words(user_input):
 def words_per_sentence(user_input):
     wps = 0.0
 
+    sum = 0
     # [YOUR CODE HERE]
-    
 
-    return 
+    sentences = list(nltk.tokenize.sent_tokenize(user_input))
+    for sent in sentences:
+        sum += count_words(sent)
+    
+    wps = sum / len(sentences)
+    return wps
 
 
 # ***** New in Project Part 3! *****
