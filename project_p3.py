@@ -461,6 +461,32 @@ def summarize_analysis(num_words, wps, num_pronouns, num_prp, num_articles, num_
 
     # [YOUR CODE HERE]
 
+    no = 0
+
+    order = ["num_pronouns", "num_prp", "num_articles", "num_past", "num_future", "num_prep", "num_negations"]
+    Mappings = {"num_pronouns" : num_pronouns, "num_prp" : num_prp, "num_articles" : num_articles, "num_past" : num_past, "num_future": num_future, "num_prep" : num_prep, "num_negations" : num_negations}
+    
+    if num_words > num_words_threshold:
+        informative_correlates.append(psychological_correlates["num_words"])
+        no += 1
+    
+    if wps > wps_threshold:
+        informative_correlates.append(psychological_correlates["wps"])
+        no += 1
+    
+    while no != 3:
+
+        hi_key = ""
+        hi = -1
+        for key in Mappings:
+            value = Mappings[key]
+            if value > hi:
+                hi_key = key
+                hi = value
+        informative_correlates.append(psychological_correlates[hi_key])
+        Mappings.pop(hi_key)
+        no+=1
+
     return informative_correlates
 
 
@@ -551,7 +577,7 @@ if __name__ == "__main__":
     num_pronouns, num_prp, num_articles, num_past, num_future, num_prep = get_pos_categories(pos_tags)
     print(num_pronouns, num_prp, num_articles, num_past, num_future, num_prep)
     num_negations = count_negations(user_input)
-    print(num_negations)
+    # print(num_negations)
 
     # ***** New in Project Part 3! *****
     # Uncomment the code below to view your output from each individual function
@@ -564,6 +590,7 @@ if __name__ == "__main__":
     informative_correlates = summarize_analysis(num_words, wps, num_pronouns,
                                                 num_prp, num_articles, num_past,
                                                 num_future, num_prep, num_negations)
+    print(informative_correlates)
     print("Thanks!  Based on my stylistic analysis, I've identified the following psychological correlates in your response:")
     for correlate in informative_correlates:
         print("- {0}".format(correlate))
