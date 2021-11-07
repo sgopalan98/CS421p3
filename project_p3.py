@@ -407,6 +407,14 @@ def count_negations(user_input):
 
     # [YOUR CODE HERE]
 
+    sentences = list(nltk.tokenize.sent_tokenize(user_input))
+    for sent in sentences:
+        tokens = nltk.word_tokenize(sent)
+        print(tokens)
+        for token in tokens:   
+            if token in ["no", "not", "never", "n't"]:
+                num_negations += 1
+
     return num_negations
 
 
@@ -543,6 +551,7 @@ if __name__ == "__main__":
     num_pronouns, num_prp, num_articles, num_past, num_future, num_prep = get_pos_categories(pos_tags)
     print(num_pronouns, num_prp, num_articles, num_past, num_future, num_prep)
     num_negations = count_negations(user_input)
+    print(num_negations)
 
     # ***** New in Project Part 3! *****
     # Uncomment the code below to view your output from each individual function
