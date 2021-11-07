@@ -379,6 +379,19 @@ def get_pos_categories(tagged_input):
 
     # Write your code here:
 
+    for (word, tag) in tagged_input:
+        if tag in [ 'PRP', 'PRP$' , 'WP', 'WP$']:
+            num_pronouns += 1
+        if tag in [ 'PRP']:
+            num_prp += 1
+        if tag in ['DT']:
+            num_articles += 1
+        if tag in ['VBD', 'VBN']:
+            num_past += 1
+        if tag in ['MD']:
+            num_future += 1
+        if tag in ['IN']:
+            num_prep += 1
 
     return num_pronouns, num_prp, num_articles, num_past, num_future, num_prep
 
@@ -528,6 +541,7 @@ if __name__ == "__main__":
     pos_tags = get_pos_tags(user_input)
     print(pos_tags)
     num_pronouns, num_prp, num_articles, num_past, num_future, num_prep = get_pos_categories(pos_tags)
+    print(num_pronouns, num_prp, num_articles, num_past, num_future, num_prep)
     num_negations = count_negations(user_input)
 
     # ***** New in Project Part 3! *****
