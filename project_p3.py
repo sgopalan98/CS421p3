@@ -349,6 +349,12 @@ def get_pos_tags(user_input):
 
     # [YOUR CODE HERE]
 
+    sentences = list(nltk.tokenize.sent_tokenize(user_input))
+    for sent in sentences:
+        tokens = nltk.word_tokenize(sent)
+        filtered_tokens = list(filter(lambda token: token != '.', tokens))
+        print(filtered_tokens)
+        tagged_input.extend(nltk.pos_tag(filtered_tokens))
 
     return tagged_input
 
@@ -441,76 +447,76 @@ def summarize_analysis(num_words, wps, num_pronouns, num_prp, num_articles, num_
 # This is your main() function.  Use this space to try out and debug your code
 # using your terminal.  The code you include in this space will not be graded.
 if __name__ == "__main__":
-    lexicon, labels = load_as_list("dataset.csv")
+    # lexicon, labels = load_as_list("dataset.csv")
 
-    # Load the Word2Vec representations so that you can make use of it in your project.
-    word2vec = load_w2v(EMBEDDING_FILE)
+    # # Load the Word2Vec representations so that you can make use of it in your project.
+    # word2vec = load_w2v(EMBEDDING_FILE)
 
-    # Instantiate and train the machine learning models
-    logistic, svm, mlp = instantiate_models()
-    logistic = train_model(logistic, word2vec, lexicon, labels)
-    svm = train_model(svm, word2vec, lexicon, labels)
-    mlp = train_model(mlp, word2vec, lexicon, labels)
+    # # Instantiate and train the machine learning models
+    # logistic, svm, mlp = instantiate_models()
+    # logistic = train_model(logistic, word2vec, lexicon, labels)
+    # svm = train_model(svm, word2vec, lexicon, labels)
+    # mlp = train_model(mlp, word2vec, lexicon, labels)
 
-    # Uncomment the line below to test out the w2v() function.  Make sure to
-    # try a few words that are unlikely to exist in its dictionary (e.g.,
-    # "covid") to see how it handles those.
-    # print("Word2Vec embedding for {0}:\t{1}".format("vaccine", w2v(word2vec, "vaccine")))
+    # # Uncomment the line below to test out the w2v() function.  Make sure to
+    # # try a few words that are unlikely to exist in its dictionary (e.g.,
+    # # "covid") to see how it handles those.
+    # # print("Word2Vec embedding for {0}:\t{1}".format("vaccine", w2v(word2vec, "vaccine")))
 
-    # Test the machine learning models to see how they perform on the small
-    # test set provided.  Write a classification report to a CSV file with this
-    # information.
-    test_data, test_labels = load_as_list("test.csv")
+    # # Test the machine learning models to see how they perform on the small
+    # # test set provided.  Write a classification report to a CSV file with this
+    # # information.
+    # test_data, test_labels = load_as_list("test.csv")
 
-    models = [logistic, svm, mlp]
-    model_names = ["Logistic Regression", "SVM", "Multilayer Perceptron"]
-    outfile = open("classification_report.csv", "w")
-    outfile_writer = csv.writer(outfile)
-    outfile_writer.writerow(["Name", "Precision", "Recall", "F1", "Accuracy"]) # Header row
-    i = 0
-    while i < len(models): # Loop through other results
-        p, r, f, a = test_model(models[i], word2vec, test_data, test_labels)
-        if models[i] == None: # Models will be null if functions have not yet been implemented
-            outfile_writer.writerow([model_names[i],"N/A"])
-        else:
-            outfile_writer.writerow([model_names[i], p, r, f, a])
-        i += 1
-    outfile.close()
+    # models = [logistic, svm, mlp]
+    # model_names = ["Logistic Regression", "SVM", "Multilayer Perceptron"]
+    # outfile = open("classification_report.csv", "w")
+    # outfile_writer = csv.writer(outfile)
+    # outfile_writer.writerow(["Name", "Precision", "Recall", "F1", "Accuracy"]) # Header row
+    # i = 0
+    # while i < len(models): # Loop through other results
+    #     p, r, f, a = test_model(models[i], word2vec, test_data, test_labels)
+    #     if models[i] == None: # Models will be null if functions have not yet been implemented
+    #         outfile_writer.writerow([model_names[i],"N/A"])
+    #     else:
+    #         outfile_writer.writerow([model_names[i], p, r, f, a])
+    #     i += 1
+    # outfile.close()
 
-    # For reference, let us also compute the accuracy for the Naive Bayes model from Project Part 1
-    # Fill in the code templates from your previous submission and uncomment the code below
-    # vectorizer, tfidf_train = vectorize_train(lexicon)
-    # lexicon = [preprocessing(d) for d in test_data]
-    # tfidf_test = vectorizer.transform(lexicon)
-    # naive = train_nb_model(tfidf_train, labels)
-    # predictions = naive.predict(tfidf_test.toarray())
-    # acc = np.sum(np.array(test_labels) == predictions) / len(test_labels)
-    # print("Naive Bayes Accuracy:", acc)
-
-
-    # Display a welcome message to the user, and accept a user response of
-    # arbitrary length
-    user_input = input("Welcome to the CS 421 healthcare chatbot!  What is your name and date of birth? Enter this information in the form: First Last MM/DD/YY\n")
-
-    # Extract the user's name and date of birth
-    name, dob = extract_user_info(user_input)
-
-    # Check the user's current health
-    user_input = input("Thanks {0}! I'll make a note that you were born on {1}.  How are you feeling today?\n".format(name, dob))
+    # # For reference, let us also compute the accuracy for the Naive Bayes model from Project Part 1
+    # # Fill in the code templates from your previous submission and uncomment the code below
+    # # vectorizer, tfidf_train = vectorize_train(lexicon)
+    # # lexicon = [preprocessing(d) for d in test_data]
+    # # tfidf_test = vectorizer.transform(lexicon)
+    # # naive = train_nb_model(tfidf_train, labels)
+    # # predictions = naive.predict(tfidf_test.toarray())
+    # # acc = np.sum(np.array(test_labels) == predictions) / len(test_labels)
+    # # print("Naive Bayes Accuracy:", acc)
 
 
-    # Predict whether the user is healthy or unhealthy
-    w2v_test = string2vec(word2vec, user_input)
+    # # Display a welcome message to the user, and accept a user response of
+    # # arbitrary length
+    # user_input = input("Welcome to the CS 421 healthcare chatbot!  What is your name and date of birth? Enter this information in the form: First Last MM/DD/YY\n")
 
-    label = None
-    # label = mlp.predict(w2v_test.reshape(1, -1)) # Use this if you select one of the other models (swap mlp for svm, etc.)
+    # # Extract the user's name and date of birth
+    # name, dob = extract_user_info(user_input)
 
-    if label == 0:
-        print("Great!  It sounds like you're healthy.")
-    elif label == 1:
-        print("Oh no!  It sounds like you're unhealthy.")
-    else:
-        print("Hmm, that's weird.  My classifier predicted a value of: {0}".format(label))
+    # # Check the user's current health
+    # user_input = input("Thanks {0}! I'll make a note that you were born on {1}.  How are you feeling today?\n".format(name, dob))
+
+
+    # # Predict whether the user is healthy or unhealthy
+    # w2v_test = string2vec(word2vec, user_input)
+
+    # label = None
+    # # label = mlp.predict(w2v_test.reshape(1, -1)) # Use this if you select one of the other models (swap mlp for svm, etc.)
+
+    # if label == 0:
+    #     print("Great!  It sounds like you're healthy.")
+    # elif label == 1:
+    #     print("Oh no!  It sounds like you're unhealthy.")
+    # else:
+    #     print("Hmm, that's weird.  My classifier predicted a value of: {0}".format(label))
 
 
     # ***** New in Project Part 3! *****
@@ -520,6 +526,7 @@ if __name__ == "__main__":
     num_words = count_words(user_input)
     wps = words_per_sentence(user_input)
     pos_tags = get_pos_tags(user_input)
+    print(pos_tags)
     num_pronouns, num_prp, num_articles, num_past, num_future, num_prep = get_pos_categories(pos_tags)
     num_negations = count_negations(user_input)
 
